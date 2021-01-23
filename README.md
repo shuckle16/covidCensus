@@ -45,7 +45,6 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(dplyr)
-#> Warning: package 'dplyr' was built under R version 4.0.3
 #> 
 #> Attaching package: 'dplyr'
 #> The following objects are masked from 'package:stats':
@@ -71,10 +70,6 @@ tidied_nyt <- fetch_nyt() %>% tidy_nyt()
 tidied_census_dens <- fetch_census_dens() %>% tidy_census_dens()
 
 tidied_census_income <- fetch_census_income() %>% tidy_census_income()
-#> Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
-#> Using compatibility `.name_repair`.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_warnings()` to see where this warning was generated.
 #> Joining, by = "state.abb"
 
 join_datasets <- function() {
@@ -97,7 +92,6 @@ joined_data %>%
     "COVID-19 Death rate in the USA versus median income", 
     subtitle = paste("Each dot is a county. Deaths data from", max(tidied_nyt$date))
     )
-#> Warning: Removed 1 rows containing missing values (geom_point).
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
@@ -110,3 +104,4 @@ joined_data %>%
   - Find other interesting county-level variables
   - Add tests? consistent names from the `tidy` functions, etc
   - Add a vignette or two
+  - Fix the warnings in `tidy_census_income`
