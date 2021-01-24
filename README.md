@@ -21,9 +21,9 @@ covidCensus is not on CRAN, but this is how to install it from Github.
 devtools::install_github("shuckle16/covidCensus")
 ```
 
-## Structure
+## Package Structure
 
-Currently there are 4 `fetch_` functions for retrieving the data you
+Currently there are 4 `fetch_*` functions for retrieving the data you
 want. Each of them returns the raw response from an http request.
 
   - `fetch_nyt`
@@ -31,8 +31,9 @@ want. Each of them returns the raw response from an http request.
   - `fetch_census_demo`
   - `fetch_census_income`
 
-There are also 4 corresponding `tidy_` functions to clean up the above
-data so they can be joined together.
+There are also 4 corresponding `tidy_*` functions to clean up the above
+data so they can be joined together. Each of them returns a tidy
+dataframe (tibble) where each row represents a county.
 
   - `tidy_nyt`
   - `tidy_census_dens`
@@ -41,36 +42,19 @@ data so they can be joined together.
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Some sample code which uses the package to plot the correlation between
+median income and virus deaths per capita.
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(ggplot2)
 library(covidCensus)
 
 tidied_nyt <- fetch_nyt() %>% tidy_nyt()
-#> Parsed with column specification:
-#> cols(
-#>   date = col_date(format = ""),
-#>   county = col_character(),
-#>   state = col_character(),
-#>   fips = col_character(),
-#>   cases = col_double(),
-#>   deaths = col_double()
-#> )
 
 tidied_census_dens <- fetch_census_dens() %>% tidy_census_dens()
 
 tidied_census_income <- fetch_census_income() %>% tidy_census_income()
-#> Joining, by = "state.abb"
 
 join_datasets <- function() {
   tidied_census_income %>%
@@ -79,7 +63,6 @@ join_datasets <- function() {
 }
 
 joined_data <- join_datasets() 
-#> Joining, by = c("county", "state")
 
 joined_data %>%   
   filter(county != "New York") %>% 

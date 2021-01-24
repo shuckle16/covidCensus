@@ -27,30 +27,27 @@ covidCensus is not on CRAN, but this is how to install it from Github.
 devtools::install_github("shuckle16/covidCensus")
 ```
 
-## Structure
+## Package Structure
 
-Currently there are 4 `fetch_` functions for retrieving the data you want. Each of them returns the raw response from an http request.
+Currently there are 4 `fetch_*` functions for retrieving the data you want. Each of them returns the raw response from an http request.
 
 * `fetch_nyt`
 * `fetch_census_dens`
 * `fetch_census_demo`
 * `fetch_census_income`
 
-There are also 4 corresponding `tidy_` functions to clean up the above data so they can be joined together.
+There are also 4 corresponding `tidy_*` functions to clean up the above data so they can be joined together. Each of them returns a tidy dataframe (tibble) where each row represents a county.
 
 * `tidy_nyt`
 * `tidy_census_dens`
 * `tidy_census_demo`
 * `tidy_census_income`
 
-
-
-
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Some sample code which uses the package to plot the correlation between median income and virus deaths per capita.
 
-```{r example, warning = F}
+```{r example, warning = FALSE, message = FALSE}
 library(dplyr)
 library(ggplot2)
 library(covidCensus)
@@ -81,7 +78,6 @@ joined_data %>%
     subtitle = paste("Each dot is a county. Deaths data from", max(tidied_nyt$date))
     )
 ```
-
 
 ## To do list
 
