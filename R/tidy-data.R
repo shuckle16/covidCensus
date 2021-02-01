@@ -5,12 +5,17 @@
 #'
 #' @export
 
-tidy_nyt <- function(data_nyt = covid_nyt) {
-  data_nyt %>%
+tidy_nyt <- function(data_nyt = covid_nyt, crop_to_last_day = TRUE) {
+  data_nyt <-
+    data_nyt %>%
     dplyr::filter(county != "Unknown") %>%
     dplyr::arrange(state, county, desc(date)) %>%
-    dplyr::group_by(state, county) %>%
-    dplyr::slice(1) %>%
+    dplyr::group_by(state, county)
+
+  if (crop_to_last_day)
+    data_nyt <- data_nyt %>% dplyr::slice(1)
+
+  data_nyt %>%
     dplyr::ungroup() %>%
     dplyr::mutate(county = dplyr::if_else(county == "New York City", "New York", county))
 }
